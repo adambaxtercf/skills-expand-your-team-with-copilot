@@ -467,6 +467,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (details.difficulty !== currentDifficulty) {
           return;
         }
+      } else {
+        // "All Levels" is selected - show only activities with no difficulty specified
+        if (details.difficulty) {
+          return;
+        }
       }
 
       // Apply search filter
