@@ -472,6 +472,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Function to generate share URL for an activity
+  function getShareUrl(activityName) {
+    const baseUrl = window.location.origin;
+    const encodedName = encodeURIComponent(activityName);
+    return `${baseUrl}/static/index.html?activity=${encodedName}`;
+  }
+
+  // Function to share activity on different platforms
+  function shareActivity(platform, activityName, description) {
+    const shareUrl = getShareUrl(activityName);
+    const shareText = `Check out "${activityName}" at Mergington High School! ${description}`;
+    const encodedText = encodeURIComponent(shareText);
+    const encodedUrl = encodeURIComponent(shareUrl);
+
+    let shareLink = "";
+
+    switch (platform) {
+      case "facebook":
+        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        break;
+      case "twitter":
+        shareLink = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+        break;
+      case "linkedin":
+        shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+        break;
+      case "email":
+        const subject = encodeURIComponent(
+          `Check out this activity: ${activityName}`
+        );
+        shareLink = `mailto:?subject=${subject}&body=${encodedText}%0A%0A${encodedUrl}`;
+        break;
+    }
+
+    if (shareLink) {
+      window.open(shareLink, "_blank", "width=600,height=400");
+    }
+  }
+
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
@@ -519,6 +558,27 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // Create share buttons
+    const shareButtonsHtml = `
+      <div class="share-container">
+        <span class="share-label">Share:</span>
+        <div class="share-buttons">
+          <button class="share-button facebook-share" data-activity="${name}" data-description="${details.description.replace(/"/g, "&quot;")}" title="Share on Facebook">
+            <span class="share-icon">f</span>
+          </button>
+          <button class="share-button twitter-share" data-activity="${name}" data-description="${details.description.replace(/"/g, "&quot;")}" title="Share on X (Twitter)">
+            <span class="share-icon">𝕏</span>
+          </button>
+          <button class="share-button linkedin-share" data-activity="${name}" data-description="${details.description.replace(/"/g, "&quot;")}" title="Share on LinkedIn">
+            <span class="share-icon">in</span>
+          </button>
+          <button class="share-button email-share" data-activity="${name}" data-description="${details.description.replace(/"/g, "&quot;")}" title="Share via Email">
+            <span class="share-icon">✉</span>
+          </button>
+        </div>
+      </div>
+    `;
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -552,6 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      ${shareButtonsHtml}
       <div class="activity-card-actions">
         ${
           currentUser
@@ -586,6 +647,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handlers for share buttons
+    const facebookBtn = activityCard.querySelector(".facebook-share");
+    const twitterBtn = activityCard.querySelector(".twitter-share");
+    const linkedinBtn = activityCard.querySelector(".linkedin-share");
+    const emailBtn = activityCard.querySelector(".email-share");
+
+    facebookBtn.addEventListener("click", (e) => {
+      const activity = e.currentTarget.dataset.activity;
+      const description = e.currentTarget.dataset.description;
+      shareActivity("facebook", activity, description);
+    });
+
+    twitterBtn.addEventListener("click", (e) => {
+      const activity = e.currentTarget.dataset.activity;
+      const description = e.currentTarget.dataset.description;
+      shareActivity("twitter", activity, description);
+    });
+
+    linkedinBtn.addEventListener("click", (e) => {
+      const activity = e.currentTarget.dataset.activity;
+      const description = e.currentTarget.dataset.description;
+      shareActivity("linkedin", activity, description);
+    });
+
+    emailBtn.addEventListener("click", (e) => {
+      const activity = e.currentTarget.dataset.activity;
+      const description = e.currentTarget.dataset.description;
+      shareActivity("email", activity, description);
+    });
 
     activitiesList.appendChild(activityCard);
   }
