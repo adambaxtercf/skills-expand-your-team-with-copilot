@@ -703,10 +703,6 @@ footer {
 }
 
 /* Theme toggle button */
-#theme-toggle {
-  margin-right: 10px;
-}
-
 .theme-icon {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
