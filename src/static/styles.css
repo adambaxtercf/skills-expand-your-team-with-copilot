@@ -32,6 +32,40 @@
   --info-light: #d1ecf1;
 }
 
+/* Dark mode colors */
+[data-theme="dark"] {
+  /* Primary colors - slightly lighter for dark mode */
+  --primary: #5c6bc0;
+  --primary-light: #8e99e0;
+  --primary-dark: #3949ab;
+  --primary-text: #ffffff;
+
+  /* Secondary colors */
+  --secondary: #ffb74d;
+  --secondary-light: #ffe0a0;
+  --secondary-dark: #c88719;
+  --secondary-text: #1a1a1a;
+
+  /* Neutral colors - inverted for dark mode */
+  --background: #1a1a2e;
+  --surface: #252541;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border: #3d3d5c;
+  --border-light: #2d2d4a;
+  --border-focus: #4d4d6c;
+
+  /* Feedback colors - adjusted for dark mode */
+  --success: #66bb6a;
+  --success-light: #1b3d1c;
+  --warning: #ffb74d;
+  --warning-light: #3d2f0d;
+  --error: #ef5350;
+  --error-light: #3d1a1a;
+  --info: #4fc3f7;
+  --info-light: #0d2a3d;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -617,6 +651,9 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 #user-status {
@@ -663,4 +700,13 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  margin-right: 10px;
+}
+
+.theme-icon {
+  font-size: 1rem;
 }
